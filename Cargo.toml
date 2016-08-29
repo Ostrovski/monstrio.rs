@@ -1,0 +1,20 @@
+[package]
+name = "monstrio"
+version = "0.1.0"
+authors = ["Ivan Velichko <iximiuz@gmail.com>"]
+description = "MonstrIO - set of high level IO methods."
+readme = "README.md"
+keywords = ["io", "stdin", "stdout", "std::io", "files", "read", "write"]
+license-file = "LICENSE"
+repository = "https://github.com/Ostrovski/monstrio.rs"
+
+[features]
+default = []
+
+[dependencies]
+log = "0.3"
+multi_reader = "0.1"
+
+[dependencies.glob]
+version = "0.2.11"
+optional = true
