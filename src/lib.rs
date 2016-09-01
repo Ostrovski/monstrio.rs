@@ -33,7 +33,7 @@ impl<I: Iterator<Item = File>> Input<BMReader<I>> {
 
 #[cfg(feature = "glob")]
 mod glob_input {
-    use std::fs::File;
+    use std::fs::{File, metadata};
     use std::vec::IntoIter;
 
     extern crate glob;
@@ -50,6 +50,21 @@ mod glob_input {
                         for entry in entries {
                             match entry {
                                 Ok(ref path) => {
+                                    match metadata(path) {
+                                        Ok(m) => {
+                                            if m.is_dir() {
+                                                warn!("Pattern matches to a directory: {}",
+                                                      path.display());
+                                                continue;
+                                            }
+                                        }
+                                        Err(err) => {
+                                            warn!("Cannot read file metadata {}\n{}",
+                                                  path.display(),
+                                                  err);
+                                            continue;
+                                        }
+                                    }
                                     match File::open(path) {
                                         Ok(file) => files.push(file),
                                         Err(err) => {
@@ -61,7 +76,7 @@ mod glob_input {
                             }
                         }
                     }
-                    Err(err) => warn!("Bad glob pattern {}\n{}", pattern.as_ref(), err),
+                    Err(err) => warn!("Bad pattern {}\n{}", pattern.as_ref(), err),
                 }
             }
 
