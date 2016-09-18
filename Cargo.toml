@@ -12,8 +12,10 @@ repository = "https://github.com/Ostrovski/monstrio.rs"
 default = []
 
 [dependencies]
-log = "0.3"
+chrono = "0.2"
 multi_reader = "0.1"
+log = "0.3"
+serde = "0.8"
 
 [dependencies.glob]
 version = "0.2.11"
