@@ -28,18 +28,39 @@ impl<I: Iterator<Item = File>> Input<BMReader<I>> {
     pub fn files(files: I) -> Input<BMReader<I>> {
         Input { source: BMReader::new(MReader::new(files)) }
     }
+
+    pub fn files_with_capacity(cap: usize, files: I) -> Input<BMReader<I>> {
+        Input { source: BMReader::with_capacity(cap, MReader::new(files)) }
+    }
 }
 
 #[cfg(feature = "glob")]
 mod glob_input {
+    use super::*;
     use std::fs::{File, metadata};
     use std::vec::IntoIter;
 
     extern crate glob;
     use self::glob::glob;
 
-    impl super::Input<super::BMReader<IntoIter<File>>> {
-        pub fn glob<P: Iterator>(patterns: P) -> super::Input<super::BMReader<IntoIter<File>>>
+    impl Input<BMReader<IntoIter<File>>> {
+        pub fn glob<P: Iterator>(patterns: P) -> Input<BMReader<IntoIter<File>>>
+            where P::Item: AsRef<str>
+        {
+            let files = Input::glob_to_files(patterns);
+            Input::files(files.into_iter())
+        }
+
+        pub fn glob_with_capacity<P: Iterator>(cap: usize,
+                                               patterns: P)
+                                               -> Input<BMReader<IntoIter<File>>>
+            where P::Item: AsRef<str>
+        {
+            let files = Input::glob_to_files(patterns);
+            Input::files_with_capacity(cap, files.into_iter())
+        }
+
+        fn glob_to_files<P: Iterator>(patterns: P) -> Vec<File>
             where P::Item: AsRef<str>
         {
             let mut files = Vec::new();
@@ -78,8 +99,7 @@ mod glob_input {
                     Err(err) => warn!("Bad pattern {}\n{}", pattern.as_ref(), err),
                 }
             }
-
-            super::Input::files(files.into_iter())
+            files
         }
     }
 }
