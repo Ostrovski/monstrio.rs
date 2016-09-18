@@ -1,6 +1,6 @@
 [package]
 name = "monstrio"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Ivan Velichko <iximiuz@gmail.com>"]
 description = "MonstrIO - set of high level IO methods."
 readme = "README.md"
