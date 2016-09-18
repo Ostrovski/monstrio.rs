@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["Ivan Velichko <iximiuz@gmail.com>"]
 description = "MonstrIO - set of high level IO methods."
 readme = "README.md"
-keywords = ["io", "stdin", "stdout", "std::io", "files", "read", "write"]
+keywords = ["stdio", "Write", "BufRead", "glob", "syslog"]
 license-file = "LICENSE"
 repository = "https://github.com/Ostrovski/monstrio.rs"
 
