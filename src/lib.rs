@@ -2,8 +2,7 @@
 
 #![crate_name = "monstrio"]
 
-use std::io;
-use std::io::{BufRead, BufReader, Stdin};
+use std::io::{BufRead, BufReader};
 use std::fs::File;
 
 #[macro_use]
@@ -87,9 +86,3 @@ mod glob_input {
 
 #[cfg(feature = "glob")]
 pub use self::glob_input::*;
-
-impl<'a> Input<io::StdinLock<'a>> {
-    pub fn stdin(stdin: &'a Stdin) -> Input<io::StdinLock<'a>> {
-        Input { source: stdin.lock() }
-    }
-}
